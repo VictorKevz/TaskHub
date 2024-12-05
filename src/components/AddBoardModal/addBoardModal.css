@@ -51,6 +51,7 @@ color: var(--crimson);
 .actions-wrapper{
     flex-wrap: nowrap;
     margin-top: 2.5rem;
+    color: #fff;
 
     
 }

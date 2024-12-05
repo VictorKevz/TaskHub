@@ -1,7 +1,7 @@
 .aside-wrapper{
     position: relative;
-    max-width: 296px;
-    width: 100%;
+    min-width: 296px;
+    /* width: 100%; */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -11,10 +11,10 @@
     color: #fff;
     z-index: 5;
   }
-  .minimized{
-    max-width: none!important;
-    width: fit-content;
+  .aside-wrapper.minimized{
+    width: fit-content!important;
     position: relative;
+    min-width: 75px;
   }
   .logo-menu-wrapper{
     width: 100%;

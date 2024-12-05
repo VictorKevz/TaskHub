@@ -1,0 +1,81 @@
+.task-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+  gap: 1.2rem;
+  margin-top: 2.5rem;
+}
+.task-card {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: var(--gunmetal);
+  border-radius: 0.75rem;
+}
+.task-card-bg {
+  min-height: 80px;
+  width: 100%;
+  border-radius: 0.75rem 0.75rem 0 0;
+  z-index: 2;
+  position: relative;
+}
+.overlay.task-cover {
+  background: #04070a74;
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+.info-actions-wrapper {
+  margin-top: 0.4rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0 0.75rem 0.95rem 0.75rem;
+}
+.card-info {
+  width: 100%;
+}
+.task-title {
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+.task-parag {
+  color: var(--soft-cream);
+  width: 90%;
+}
+.options-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: flex-end;
+}
+.delete-task-btn {
+  color: var(--crimson);
+  margin-top: .5rem;
+}
+.tags-wrapper {
+  width: 100%;
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tag-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.3rem;
+  height: 1.5rem;
+  border-radius: 0.2rem;
+}
+.tag-item:nth-child(1n) {
+  background-color: var(--light-lavender);
+}
+.tag-item:nth-child(2n) {
+  background-color: var(--crimson);
+}
+.tag-item:nth-child(3n) {
+  background-color: var(--azure);
+}

@@ -11,13 +11,13 @@ function AddBoardModal() {
   const [isNameValid, setNameValid] = useState(true);
   const [isLogoValid, setLogoValid] = useState(true);
   const [isColumnValid, setColumnValid] = useState(true);
-  
+
   const [iconIndex, setIconIndex] = useState(null);
   const columns = ["To Do", "In Progress", "Completed"];
   const [selectedColumns, setSelectedColumns] = useState(["To Do"]);
 
   const updateColumns = (column) => {
-    setColumnValid(true)
+    setColumnValid(true);
     setSelectedColumns((prevColumns) => {
       const isSelected = prevColumns.includes(column);
       if (isSelected) {
@@ -31,11 +31,12 @@ function AddBoardModal() {
     if (
       !boards?.userBoardName.trim() ||
       boards?.userBoardName.length < 3 ||
-      iconIndex === null || selectedColumns?.length === 0
+      iconIndex === null ||
+      selectedColumns?.length === 0
     ) {
       setNameValid(false);
       setLogoValid(false);
-      setColumnValid(false)
+      setColumnValid(false);
       return;
     } else {
       dispatchBoards({
@@ -44,8 +45,11 @@ function AddBoardModal() {
           id: uuid(),
           title: boards?.userBoardName,
           icon: logoData[iconIndex],
-          columns:selectedColumns.map((item)=>({columnId: uuid(),columnTitle: item,tasks:[]}))
-    
+          columns: selectedColumns.map((item) => ({
+            columnId: uuid(),
+            columnTitle: item,
+            tasks: [],
+          })),
         },
       });
     }
@@ -58,7 +62,9 @@ function AddBoardModal() {
           <button
             type="button"
             className="close-modal-btn"
-            onClick={() => dispatchBoards({ type: "CLOSE_MODAL",key:"boardModal" })}
+            onClick={() =>
+              dispatchBoards({ type: "CLOSE_MODAL", key: "boardModal" })
+            }
           >
             <Close className="text-2xl" />
           </button>
@@ -71,7 +77,9 @@ function AddBoardModal() {
          *
          *
          */}
-        <label htmlFor="boardName" className="board-label">Board name</label>
+        <label htmlFor="boardName" className="board-label">
+          Board name
+        </label>
         <input
           type="text"
           id="boardName"
@@ -137,8 +145,9 @@ function AddBoardModal() {
          *
          */}
         <ul className="columns-wrapper">
-          <li className="column-header">Choose Columns
-          {!isColumnValid && (
+          <li className="column-header">
+            Choose Columns
+            {!isColumnValid && (
               <span className="text-xs text-crimson">
                 Select at least one column!
               </span>
@@ -166,7 +175,9 @@ function AddBoardModal() {
           <button
             type="button"
             className="btn cancel"
-            onClick={() => dispatchBoards({ type: "CLOSE_MODAL",key:"boardModal" })}
+            onClick={() =>
+              dispatchBoards({ type: "CLOSE_MODAL", key: "boardModal" })
+            }
           >
             Cancel
           </button>

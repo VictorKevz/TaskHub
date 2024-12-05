@@ -10,7 +10,7 @@
     align-items: center!important;
     justify-content: center!important;
     z-index: 5!important;
-    background-color: rgba(2, 22, 5, 0.448)!important;
+    background-color: rgba(1, 21, 4, 0.334)!important;
     backdrop-filter: blur(3px);
 }
 .overlay{

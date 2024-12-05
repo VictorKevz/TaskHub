@@ -38,7 +38,7 @@ function AsideBar() {
         {boards?.boardsList?.map((board) => {
           const isCurrent = board?.id === currentBoard;
           return (
-            <li key={board?.id} className="board-item">
+            <li key={board.id} className="board-item">
               <button
                 type="button"
                 className={`board-btn ${isCurrent && "current-board"} ${

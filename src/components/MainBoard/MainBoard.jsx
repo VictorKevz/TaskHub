@@ -3,10 +3,13 @@ import "./mainBoard.css";
 import { DataContext } from "../../App";
 import { AddCircle, Tune } from "@mui/icons-material";
 import AddTaskModal from "../AddTaskModal/AddTaskModal";
+import { coverImages } from "./coverImages";
+import TaskCard from "../TaskCard/TaskCard";
 
 function MainBoard() {
   const { boards, currentBoard, dispatchBoards } = useContext(DataContext);
   const currentObj = boards?.boardsList.find((obj) => obj.id === currentBoard);
+  
   return (
     <section className="board-wrapper">
       <header className="board-header">
@@ -42,15 +45,7 @@ function MainBoard() {
             <article className="task-card-wrapper">
               {item?.tasks?.length > 0 ? (
                 item.tasks.map((task) => (
-                  <div key={task?.taskId} className="task-card">
-                    <h3 className="task-title">{task.taskName}</h3>
-                    <p className="task-parag">{task.taskDescription}</p>
-                    {task?.tags?.map((tag, i) => (
-                      <ul key={i} className="tags-wrapper">
-                        <li className="tag-item">{tag}</li>
-                      </ul>
-                    ))}
-                  </div>
+                 <TaskCard key={task?.taskId} task={task}/>
                 ))
               ) : (
                 <p className="empty-parag">No tasks available</p>
@@ -59,7 +54,7 @@ function MainBoard() {
           </section>
         ))}
       </div>
-      {boards?.taskModal && <AddTaskModal/>}
+      {boards?.taskModal && <AddTaskModal />}
     </section>
   );
 }
