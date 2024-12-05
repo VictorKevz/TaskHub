@@ -1,0 +1,45 @@
+
+ .theme-wrapper{
+    position: absolute;
+    bottom: 2rem;
+    left: 1.5rem;
+    width: 224px;
+    color: #fff;
+    
+  }
+  .open-theme-wrapper{
+    width: 100%;
+    height: 2.75rem;
+    border-radius: .75rem;
+    background-color: #0a161e;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0 1rem;
+    box-shadow: 0 0 2rem rgba(255, 255, 255, 0.133);
+  }
+  .open-theme-btn{
+    position: relative;
+    width: fit-content;
+    z-index: 2;
+    padding: 0 .5rem;
+    transition: .3s ease-in-out;
+
+    
+  }
+  .active::before{
+    content: "";
+    position: absolute;
+    width: 5.5rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--azure);
+    border-radius: .75rem;
+    left: -.2rem;
+    bottom: .4rem;
+    z-index: -1;
+    transition: .3s ease-in-out;
+
+  }

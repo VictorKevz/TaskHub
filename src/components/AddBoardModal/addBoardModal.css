@@ -1,0 +1,89 @@
+.modal-container{
+    max-width: 520px;
+    width: 100%;
+    min-height: 376px;
+    background-color: var(--gunmetal);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 2rem;
+    border-radius: .75rem;
+}
+.modal-header{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    color: #fff;
+
+}
+.close-modal-btn:hover{
+color: var(--crimson);
+}
+.board-input{
+    background: none;
+    border: 1px solid var(--slate);
+    height: 2.8rem;
+    border-radius: .5rem;
+    padding-left: 1rem;
+}
+.board-input:focus,.board-input:hover{
+    outline: none;
+    border-color: var(--azure);
+}
+.board-label{
+    margin-bottom: .5rem;
+}
+.logos-wrapper,.actions-wrapper,.columns-wrapper{
+    margin-top: 2rem;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}.logo-header,.column-header{
+    margin-bottom: -.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.actions-wrapper{
+    flex-wrap: nowrap;
+    margin-top: 2.5rem;
+
+    
+}
+.btn{
+    width: fit-content;
+    padding: 0 1.5rem;
+    height: 2.5rem;
+    border-radius: 2.5rem;
+}
+.create{
+    background-color: var(--azure);  
+}
+.cancel{
+    border: 2px solid var(--slate);   
+}
+.selected{
+    border: 2px solid var(--lavender);
+    border-radius: 50%;  
+    padding: 4px;  
+}
+.border-error{
+    border-color: var(--crimson);
+}
+
+.column-btn{
+    border: 1px solid var(--slate);
+    padding: 0 .5rem;
+    height: 2.5rem;
+    border-radius: .25rem;
+    font-size: 1rem;
+}
+.chosen{
+    background-color: var(--dark-gray);
+    color: #fff;
+    border-color: #fff;
+}
