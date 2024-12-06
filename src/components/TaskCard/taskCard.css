@@ -44,7 +44,7 @@
   color: var(--soft-cream);
   width: 90%;
 }
-.options-wrapper {
+.options-btn-wrapper {
   display: flex;
   flex-direction: column;
   gap: 2rem;

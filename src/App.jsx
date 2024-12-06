@@ -37,7 +37,15 @@ const boardReducer = (state, action) => {
         boardsList: [...state.boardsList, { id, title, icon, columns }],
         userBoardName: "",
         boardModal: false,
+    
       };
+    case "DELETE_BOARD":
+      return {
+        ...state,
+        boardsList : state.boardsList.filter((item)=> item.id !== action.id),
+        
+        
+      }  
     case "UPDATE_TASKS_INPUT":
       const { name, value } = action.payload;
       return {
@@ -49,42 +57,49 @@ const boardReducer = (state, action) => {
         ...state,
         status: action.status,
       };
-      case "ADD_NEW_TASK":
-        const { currentBoard, status } = action.payload;
-        const { taskId, taskName, taskDescription } = action.payload.tasks;
-      
-        // Step 1: Find the current board
-        const currentBoardObj = state.boardsList.find((board) => board.id === currentBoard);
-      
-        // Step 2: Add the new task to the appropriate column
-        const updatedColumns = currentBoardObj.columns.map((column) => {
-          if (column.columnTitle === status) {
-            return {
-              ...column,
-              tasks: [...column.tasks, { taskId, taskName, taskDescription }],
-            };
-          }
-          return column;
-        });
-      
-        // Step 3: Update the board with new tasks
-        const updatedBoardsList = state.boardsList.map((board) => {
-          if (board.id === currentBoard) {
-            return {
-              ...board,
-              columns: updatedColumns,
-            };
-          }
-          return board;
-        });
-      
-        // Step 4: Return the updated state
-        return {
-          ...state,
-          boardsList: updatedBoardsList,
-          taskModal: false,
-        };
-      
+    case "ADD_NEW_TASK":
+      const { currentBoard, status } = action.payload;
+      const { taskId, taskName, taskDescription } = action.payload.tasks;
+
+      // Step 1: Find the current board
+      const currentBoardObj = state.boardsList.find(
+        (board) => board.id === currentBoard
+      );
+
+      // Step 2: Add the new task to the appropriate column
+      const updatedColumns = currentBoardObj.columns.map((column) => {
+        if (column.columnTitle === status) {
+          return {
+            ...column,
+            tasks: [...column.tasks, { taskId, taskName, taskDescription }],
+          };
+        }
+        return column;
+      });
+
+      // Step 3: Update the board with new tasks
+      const updatedBoardsList = state.boardsList.map((board) => {
+        if (board.id === currentBoard) {
+          return {
+            ...board,
+            columns: updatedColumns,
+          };
+        }
+        return board;
+      });
+
+      // Step 4: Return the updated state
+      return {
+        ...state,
+        boardsList: updatedBoardsList,
+        taskModal: false,
+        userTaskTitle: "",
+        userTaskDescription: "",
+      };
+    case "DELETE_TASK":
+      return {
+        ...state,
+      };
     default:
       return state;
   }
@@ -122,9 +137,8 @@ function App() {
                   {
                     taskId: uuid(),
                     taskName: "Task 1",
-                    taskDescription:
-                      "The description of task 1",
-                    tags: ["thesis","school","academic"],
+                    taskDescription: "The description of task 1",
+                    tags: ["thesis", "school", "academic"],
                   },
                 ],
               },
@@ -150,6 +164,7 @@ function App() {
     userTaskTitle: "",
     userTaskDescription: "",
     status: "To Do",
+    
   };
   const [boards, dispatchBoards] = useReducer(boardReducer, initialBoardsData);
   const [currentBoard, setCurrentBoard] = useState(0);
@@ -166,6 +181,7 @@ function App() {
         <main className="bg-charcoal w-full min-h-screen flex items-start justify-start">
           <AsideBar />
           <MainBoard />
+          
         </main>
       </DataContext.Provider>
     </AppThemeContext.Provider>

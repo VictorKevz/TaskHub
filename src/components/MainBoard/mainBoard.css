@@ -94,6 +94,7 @@
 
 .empty-parag{
     margin-top: 1rem;
+    min-width: max-content;
 
 }
 

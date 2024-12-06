@@ -3,7 +3,7 @@ import { DataContext } from "../../App";
 import { ArrowDropDown, ArrowDropUp, Check, Close } from "@mui/icons-material";
 import "./addTask.css";
 import uuid from "react-uuid";
-function AddTaskModal() {
+function AddTaskModal({setCount}) {
   const { boards, dispatchBoards, currentBoard } = useContext(DataContext);
 
   const [isValid, setValid] = useState({
@@ -59,6 +59,7 @@ function AddTaskModal() {
           },
         },
       });
+      setCount((prevNum) => prevNum === 7 ? 0 : prevNum + 1)
     }
   };
   return (
