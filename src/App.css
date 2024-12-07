@@ -10,7 +10,7 @@
     align-items: center!important;
     justify-content: center!important;
     z-index: 5!important;
-    background-color: rgba(1, 21, 4, 0.334)!important;
+    background-color: rgba(2, 19, 4, 0.187)!important;
     backdrop-filter: blur(3px);
 }
 .overlay{
@@ -27,4 +27,5 @@
 fieldset,textarea,input{
     border: none;
     background: none;
+    outline: none;
 }

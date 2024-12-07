@@ -3,18 +3,17 @@ import { DataContext } from "../../App";
 import { ArrowDropDown, ArrowDropUp, Check, Close } from "@mui/icons-material";
 import "./addTask.css";
 import uuid from "react-uuid";
-function AddTaskModal({setCount}) {
-  const { boards, dispatchBoards, currentBoard } = useContext(DataContext);
+function AddTaskModal({ setCount }) {
+  const { boards, dispatchBoards } = useContext(DataContext);
 
   const [isValid, setValid] = useState({
     userTaskTitle: true,
     taskDescription: true,
   });
-  const statusList = ["To Do", "In Progress", "Completed"];
   const [isOpen, setOpen] = useState(false);
 
   const currentBoardObj = boards?.boardsList?.find(
-    (item) => item?.id === currentBoard
+    (item) => item?.id === boards?.selectedBoard
   );
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,33 +33,43 @@ function AddTaskModal({setCount}) {
 
   const handleCreate = () => {
     if (!userTaskDescription.trim()) {
-      setValid((prevValid) => ({
-        ...prevValid,
-        userTaskDescription: false,
-      }));
+      setValid((prev) => ({ ...prev, userTaskDescription: false }));
       return;
     }
     if (!userTaskTitle.trim()) {
-      setValid((prevValid) => ({
-        ...prevValid,
-        userTaskTitle: false,
-      }));
+      setValid((prev) => ({ ...prev, userTaskTitle: false }));
       return;
-    } else {
-      dispatchBoards({
-        type: "ADD_NEW_TASK",
-        payload: {
-          currentBoard,
-          status:boards?.status,
-          tasks: {
-            taskId: uuid(),
-            taskName: boards?.userTaskTitle,
-            taskDescription: boards?.userTaskDescription,
-          },
-        },
-      });
-      setCount((prevNum) => prevNum === 7 ? 0 : prevNum + 1)
     }
+  
+    if (!currentBoardObj) {
+      console.warn("No matching board found.");
+      return;
+    }
+  
+    const updatedBoard = {
+      ...currentBoardObj,
+      columns: currentBoardObj?.columns?.map((item) =>
+        item?.columnTitle === boards?.status
+          ? {
+              ...item,
+              tasks: [
+                ...item.tasks,
+                {
+                  taskId: uuid(),
+                  taskName: boards?.userTaskTitle,
+                  taskDescription: boards?.userTaskDescription,
+                },
+              ],
+            }
+          : item
+      ),
+    };
+  
+    dispatchBoards({
+      type: "ADD_NEW_TASK",
+      payload: { updatedBoard },
+    });
+  
   };
   return (
     <div className="modal-wrapper">

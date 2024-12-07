@@ -21,11 +21,13 @@
     padding: .5rem 1.5rem .5rem 3rem;
     border: 1px solid rgba(128, 128, 128, 0.285);
     color: #fff;
+   
 
 }
 .board-name{
     font-size: 2rem;
     font-weight: 600;
+    text-transform: uppercase;
     
 }
 .options-wrapper{
@@ -33,6 +35,7 @@
     display: flex;
     align-items: center;
     gap: .75rem;
+    position: relative;
 }
 .open-taskModal-btn{
     height: 2.75rem;
@@ -41,12 +44,38 @@
     border-radius: 2rem;
     gap: .3rem;
 }
+/* .options-board-btn{
+  border: 1px solid var(--slate);
+} */
+.options-list{
+  position: absolute;
+  top: 100%;
+  margin-top: 1.6rem;
+  width: 100%;
+  padding: 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: var(--charcoal);
+  border: 1px solid var(--gunmetal);
+  border-radius: .3rem;
+  box-shadow: 0 0 1rem #1cc63808;
+  color:#fff;
+  gap: .5rem;
+  z-index: 3;
+}
+.delete-board-btn{
+  color: var(--crimson);
+}
+
 .board-container {
   
   width: 100%;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
   gap: 4rem;
   color: var(--cream);
   padding: 0 1.5rem 0 3rem;

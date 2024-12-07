@@ -8,20 +8,21 @@ import TaskCard from "../TaskCard/TaskCard";
 import WarningModal from "../WarningModal/WarningModal";
 
 function MainBoard() {
-  const { boards, currentBoard, dispatchBoards } = useContext(DataContext);
-  const currentObj = boards?.boardsList.find((obj) => obj.id === currentBoard);
-  const [count, setCount] = useState(0);
-  const [openModal, setOpenModal] = useState(false);
+  const { boards, dispatchBoards } = useContext(DataContext);
+  const [optionsOpen, setOptions] = useState(false);
+  const currentObj = boards?.boardsList.find(
+    (obj) => obj.id === boards?.selectedBoard
+  );
 
   return (
     <section className="board-wrapper">
-      {/* 
-      *
-      *
-      * HEADER SECTION
-      * 
-      * 
-      */}
+      {/*
+       *
+       *
+       * HEADER SECTION
+       *
+       *
+       */}
       <header className="board-header">
         <h2 className="board-name">{currentObj?.title}</h2>
         <div className="options-wrapper">
@@ -29,28 +30,56 @@ function MainBoard() {
             type="button"
             className="open-taskModal-btn"
             onClick={() =>
-              dispatchBoards({ type: "OPEN_MODAL", key: "taskModal" })
+              dispatchBoards({
+                type: "OPEN_MODAL",
+                payload: { key: "taskModal" },
+              })
             }
           >
             <AddCircle />
             Create Task
           </button>
+
           <button
             type="button"
             className="options-board-btn"
-            onClick={() => setOpenModal(true)}
+            onClick={() => setOptions(!optionsOpen)}
           >
             <Tune />
           </button>
+          {optionsOpen && (
+            <ul className="options-list">
+              <li className="option-item">
+                <button
+                  type="button"
+                  className="delete-board-btn"
+                  onClick={() => {
+                    dispatchBoards({
+                      type: "OPEN_MODAL",
+                      payload: { key: "boardWarningModal" },
+                    });
+                    setOptions(false);
+                  }}
+                >
+                  Delete Board
+                </button>
+              </li>
+              <li className="option-item">
+                <button type="button" className="edit-board-btn">
+                  Edit Board
+                </button>
+              </li>
+            </ul>
+          )}
         </div>
       </header>
-      {/* 
-      *
-      *
-      * BOARD SECTION
-      * 
-      * 
-      */}
+      {/*
+       *
+       *
+       * BOARD SECTION
+       *
+       *
+       */}
       <div className="board-container">
         {currentObj?.columns?.map((item, i) => (
           <section key={item?.columnId} className="col-wrapper">
@@ -66,7 +95,11 @@ function MainBoard() {
             <article className="task-card-wrapper">
               {item?.tasks?.length > 0 ? (
                 item.tasks.map((task) => (
-                  <TaskCard key={task?.taskId} task={task} count={count} />
+                  <TaskCard
+                    key={task?.taskId}
+                    task={task}
+                    columnId={item?.columnId}
+                  />
                 ))
               ) : (
                 <p className="empty-parag">No tasks available</p>
@@ -75,16 +108,28 @@ function MainBoard() {
           </section>
         ))}
       </div>
-      {boards?.taskModal && <AddTaskModal setCount={setCount} />}
-      {openModal && (
+      {boards?.taskModal && <AddTaskModal />}
+
+      {boards.boardWarningModal && (
         <WarningModal
           title={`Want to delete board: '${currentObj?.title}'?`}
           message={
             "This action can't be undone. All columns and tasks on this board will be permanently deleted!"
           }
-          id = {currentBoard}          
-          onClose={setOpenModal}
+          id={boards?.selectedBoard}
+          host={"board"}
+        />
+      )}
 
+      {boards.taskWarningModal && (
+        <WarningModal
+          id={boards?.modalData?.taskId}
+          title={`Want to delete task: '${boards?.modalData?.taskName}' ? `}
+          message={
+            "This action can't be undone. This task and its description will be permanently deleted!"
+          }
+          host={"task"}
+          columnId={boards?.modalData?.columnId}
         />
       )}
     </section>

@@ -121,7 +121,7 @@ function AddBoardModal() {
               <li key={i} className="logo-item">
                 <button
                   type="button"
-                  className={`icon-btn `}
+                  className={`icon-btn ${isSelected && "selected"}`}
                   onClick={() => {
                     setIconIndex(i);
                     setLogoValid(true);
@@ -130,7 +130,7 @@ function AddBoardModal() {
                   <img
                     src={logo}
                     alt=""
-                    className={`logo-icon ${isSelected && "selected"}`}
+                    className={`logo-icon `}
                   />
                 </button>
               </li>

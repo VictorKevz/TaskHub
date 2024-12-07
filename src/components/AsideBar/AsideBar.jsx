@@ -1,10 +1,5 @@
 import React, { useContext, useState } from "react";
-import {
-  AddCircle,
-  Assignment,
-  Visibility,
-  VisibilityOff,
-} from "@mui/icons-material";
+import { AddCircle, Assignment } from "@mui/icons-material";
 import "./asideBar.css";
 import ThemeSwitch from "../Theme/ThemeSwitch";
 import { DataContext } from "../../App";
@@ -13,8 +8,7 @@ import openIcon from "../../assets/images/sidebar-open.svg";
 import closeIcon from "../../assets/images/sidebar-close.svg";
 
 function AsideBar() {
-  const { boards, dispatchBoards, currentBoard, setCurrentBoard } =
-    useContext(DataContext);
+  const { boards, dispatchBoards } = useContext(DataContext);
   const [isOpen, setOpen] = useState(true);
   return (
     <aside className={`aside-wrapper ${!isOpen && "minimized"}`}>
@@ -30,13 +24,18 @@ function AsideBar() {
           className="toggle-menu-btn"
           onClick={() => setOpen(!isOpen)}
         >
-          <img src={isOpen ? closeIcon : openIcon} alt="" className="toggle-icon" aria-hidden="true" />
+          <img
+            src={isOpen ? closeIcon : openIcon}
+            alt=""
+            className="toggle-icon"
+            aria-hidden="true"
+          />
         </button>
       </div>
 
       <ul className="board-names">
         {boards?.boardsList?.map((board) => {
-          const isCurrent = board?.id === currentBoard;
+          const isCurrent = board?.id === boards?.selectedBoard;
           return (
             <li key={board.id} className="board-item">
               <button
@@ -44,9 +43,11 @@ function AsideBar() {
                 className={`board-btn ${isCurrent && "current-board"} ${
                   isCurrent && !isOpen && "current-board-closed"
                 }`}
-                onClick={() => setCurrentBoard(board.id)}
+                onClick={() =>
+                  dispatchBoards({ type: "UPDATE_BOARD", id: board.id })
+                }
               >
-                <img src={board?.icon} />
+                <img src={board?.icon} className="board-icon"/>
                 {isOpen && board?.title}
               </button>
             </li>
@@ -56,7 +57,9 @@ function AsideBar() {
       <button
         type="button"
         className="add-board-btn"
-        onClick={() => dispatchBoards({ type: "OPEN_MODAL",key:"boardModal" })}
+        onClick={() =>
+          dispatchBoards({ type: "OPEN_MODAL", payload:{key: "boardModal"} })
+        }
       >
         <AddCircle />
         {isOpen && "Add new board"}

@@ -69,6 +69,7 @@
     align-items: flex-start;
     display: flex;
     flex-direction: column;
+
 }
 .board-btn{
     gap: .625rem;
@@ -76,10 +77,13 @@
     font-size: .875rem;
     justify-content: flex-start;
     padding: 0 .5rem;
+    text-transform: uppercase;
+
 }
 .current-board{
     height: 3rem;
     border: 2px solid var(--azure);
+    background-color: var(--azure);
     border-radius: 2.8rem;
     width: 100%;
     justify-content: flex-start;
