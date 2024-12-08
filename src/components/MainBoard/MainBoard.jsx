@@ -99,6 +99,7 @@ function MainBoard() {
                     key={task?.taskId}
                     task={task}
                     columnId={item?.columnId}
+                    columnTitle = {item?.columnTitle}
                   />
                 ))
               ) : (
@@ -108,7 +109,16 @@ function MainBoard() {
           </section>
         ))}
       </div>
-      {boards?.taskModal && <AddTaskModal />}
+      {boards?.taskModal && <AddTaskModal host="add" />}
+      {boards?.editTaskModal && (
+        <AddTaskModal 
+        host="edit" 
+        taskName = {boards?.modalData.taskName}
+        taskId = {boards?.modalData.taskId}
+        taskDescription = {boards?.modalData?.taskDescription}
+        columnTitle = {boards?.modalData?.columnTitle}
+        columnId = {boards?.modalData?.columnId}
+        />)}
 
       {boards.boardWarningModal && (
         <WarningModal

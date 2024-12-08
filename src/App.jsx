@@ -16,10 +16,12 @@ const boardReducer = (state, action) => {
         ...state,
         [action.payload.key]: true,
         modalData: {
-          taskId:action.payload?.modalData?.taskId,
-          taskName:action.payload?.modalData?.taskName,
-          columnId:action.payload?.modalData?.columnId,
-        }
+          taskId: action.payload?.modalData?.taskId,
+          taskName: action.payload?.modalData?.taskName,
+          taskDescription: action.payload?.modalData?.taskDescription,
+          columnId: action.payload?.modalData?.columnId,
+          columnTitle: action.payload?.modalData?.columnTitle,
+        },
       };
     case "CLOSE_MODAL":
       return {
@@ -29,10 +31,7 @@ const boardReducer = (state, action) => {
         userTaskTitle: "",
         userTaskDescription: "",
         status: "To Do",
-        modalData: {
-          taskId:null,
-          columnId:null, 
-        },
+        modalData: {},
       };
     case "UPDATE_BOARD_INPUT":
       return {
@@ -53,7 +52,8 @@ const boardReducer = (state, action) => {
         ...state,
         boardsList: state.boardsList.filter((item) => item.id !== action.id),
         boardWarningModal: false,
-        selectedBoard: state.boardsList?.length > 0 ? state.boardsList?.[0]?.id : null,
+        selectedBoard:
+          state.boardsList?.length > 0 ? state.boardsList?.[0]?.id : null,
       };
     case "UPDATE_BOARD":
       return {
@@ -80,9 +80,10 @@ const boardReducer = (state, action) => {
         ...state,
         boardsList: updatedBoardList,
         taskModal: false,
+        editTaskModal: false,
         userTaskTitle: "",
         userTaskDescription: "",
-        status:"To Do"
+        status: "To Do",
       };
     case "DELETE_TASK":
       const { taskId, boardId, columnId } = action.payload;
@@ -114,6 +115,16 @@ const boardReducer = (state, action) => {
         ...state,
         boardsList: updatedBoardDelete,
         taskWarningModal: false,
+      };
+    case "EDIT_TASK":
+      const { updatedBoardObj } = action.payload;
+      const updatedBoardEdit = state.boardsList.map((board) =>
+        board.id === updatedBoardObj.id ? updatedBoardObj : board
+      );
+      return {
+        ...state,
+        boardsList:updatedBoardEdit,
+        editTaskModal: false,
       };
     default:
       return state;
@@ -176,18 +187,13 @@ function App() {
     boardModal: false,
     userBoardName: "",
     taskModal: false,
+    editTaskModal: false,
     userTaskTitle: "",
     userTaskDescription: "",
     status: "To Do",
     taskWarningModal: false,
     boardWarningModal: false,
-    modalData: {
-      taskId: null,
-    columnId: null,
-    taskName:null
-    }
-    
-    
+    modalData: {},
   };
   const [boards, dispatchBoards] = useReducer(boardReducer, initialBoardsData);
   const [currentBoard, setCurrentBoard] = useState(0);
