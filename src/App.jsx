@@ -21,6 +21,7 @@ const boardReducer = (state, action) => {
           taskDescription: action.payload?.modalData?.taskDescription,
           columnId: action.payload?.modalData?.columnId,
           columnTitle: action.payload?.modalData?.columnTitle,
+          boardTitle: action.payload?.modalData?.boardTitle,
         },
       };
     case "CLOSE_MODAL":
@@ -60,6 +61,31 @@ const boardReducer = (state, action) => {
         ...state,
         selectedBoard: action.id,
       };
+      case "EDIT_BOARD":
+        const {
+          id: editId,
+          title: titleEdit,
+          icon: iconEdit,
+          columns: columnEdit,
+        } = action.payload;
+      
+        return {
+          ...state,
+          boardsList: state.boardsList.map((board) => {
+            if (board.id === editId) {
+              return {
+                ...board,
+                id: editId, 
+                title: titleEdit,
+                icon: iconEdit,
+                columns: columnEdit,
+              };
+            }
+            return board; 
+          }),
+          editBoardModal: "", 
+          boardModal: false,  
+        };
     case "UPDATE_TASKS_INPUT":
       const { name, value } = action.payload;
       return {
@@ -123,7 +149,7 @@ const boardReducer = (state, action) => {
       );
       return {
         ...state,
-        boardsList:updatedBoardEdit,
+        boardsList: updatedBoardEdit,
         editTaskModal: false,
       };
     default:
@@ -188,6 +214,7 @@ function App() {
     userBoardName: "",
     taskModal: false,
     editTaskModal: false,
+    editBoardModal: false,
     userTaskTitle: "",
     userTaskDescription: "",
     status: "To Do",

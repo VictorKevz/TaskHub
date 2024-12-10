@@ -101,27 +101,48 @@ function AddTaskModal({
       console.warn("No matching board found.");
       return;
     }
-    const updatedBoardObj = {
-      ...currentBoardObj,
-      columns: currentBoardObj.columns.map((column) => {
-        if (column.columnId === columnId) {
-          return {
-            ...column,
-            
-            tasks: column.tasks.map((task) =>
-              task.taskId === taskId
-                ? {
-                    ...task,
-                    taskName: editing.userTaskTitle,
-                    taskDescription: editing.userTaskDescription,
-                  }
-                : task
-            ),
+
+    let taskToMove = null; // To hold the task if it needs to be moved
+
+const updatedBoardObj = {
+  ...currentBoardObj,
+  columns: currentBoardObj.columns.map((column) => {
+    // Handle the current column
+    if (column.columnTitle === columnTitle) {
+      // Remove the task if the status (editColumn) is different
+      const filteredTasks = column.tasks.filter((task) => {
+        if (task.taskId === taskId && editColumn !== columnTitle) {
+          // Task is being moved; modify it and store it in taskToMove
+          taskToMove = {
+            ...task,
+            taskName: editing.userTaskTitle,
+            taskDescription: editing.userTaskDescription,
           };
+          return false; // Exclude this task
         }
-        return column;
-      }),
-    };
+        return true; // Keep other tasks
+      });
+
+      return {
+        ...column,
+        tasks: filteredTasks, // Update the column with the task removed
+      };
+    }
+
+    // Handle the target column
+    if (column.columnTitle === editColumn) {
+      return {
+        ...column,
+        tasks: taskToMove
+          ? [...column.tasks, taskToMove] // Add the modified task
+          : column.tasks, // If no task to move, do nothing
+      };
+    }
+
+    // Leave all other columns unchanged
+    return column;
+  }),
+};
     dispatchBoards({ type: "EDIT_TASK", payload: { updatedBoardObj } });
   };
   return (

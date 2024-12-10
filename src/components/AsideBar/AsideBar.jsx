@@ -66,7 +66,8 @@ function AsideBar() {
       </button>
 
       <ThemeSwitch isOpen={isOpen} />
-      {boards?.boardModal && <AddBoardModal />}
+      {boards?.boardModal && <AddBoardModal host={"add"} />}
+      {boards?.editBoardModal && <AddBoardModal boardTitle ={boards?.modalData?.boardTitle} />}
       <div className="overlay"></div>
     </aside>
   );

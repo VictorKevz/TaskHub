@@ -65,7 +65,22 @@ function MainBoard() {
                 </button>
               </li>
               <li className="option-item">
-                <button type="button" className="edit-board-btn">
+                <button
+                  type="button"
+                  className="edit-board-btn"
+                  onClick={() => {
+                    dispatchBoards({
+                      type: "OPEN_MODAL",
+                      payload: {
+                        key: "editBoardModal",
+                        modalData: {
+                          boardTitle: currentObj?.title,
+                        },
+                      },
+                    });
+                    setOptions(false);
+                  }}
+                >
                   Edit Board
                 </button>
               </li>
@@ -99,7 +114,7 @@ function MainBoard() {
                     key={task?.taskId}
                     task={task}
                     columnId={item?.columnId}
-                    columnTitle = {item?.columnTitle}
+                    columnTitle={item?.columnTitle}
                   />
                 ))
               ) : (
@@ -111,14 +126,15 @@ function MainBoard() {
       </div>
       {boards?.taskModal && <AddTaskModal host="add" />}
       {boards?.editTaskModal && (
-        <AddTaskModal 
-        host="edit" 
-        taskName = {boards?.modalData.taskName}
-        taskId = {boards?.modalData.taskId}
-        taskDescription = {boards?.modalData?.taskDescription}
-        columnTitle = {boards?.modalData?.columnTitle}
-        columnId = {boards?.modalData?.columnId}
-        />)}
+        <AddTaskModal
+          host="edit"
+          taskName={boards?.modalData.taskName}
+          taskId={boards?.modalData.taskId}
+          taskDescription={boards?.modalData?.taskDescription}
+          columnTitle={boards?.modalData?.columnTitle}
+          columnId={boards?.modalData?.columnId}
+        />
+      )}
 
       {boards.boardWarningModal && (
         <WarningModal

@@ -5,9 +5,12 @@ import { logoData } from "../../logoData";
 import "./addBoardModal.css";
 import uuid from "react-uuid";
 
-function AddBoardModal() {
+function AddBoardModal({ host, boardTitle }) {
   const { boards, dispatchBoards } = useContext(DataContext);
 
+  const currentObj = boards?.boardsList.find(
+    (obj) => obj.id === boards?.selectedBoard
+  );
   const [isNameValid, setNameValid] = useState(true);
   const [isLogoValid, setLogoValid] = useState(true);
   const [isColumnValid, setColumnValid] = useState(true);
@@ -16,9 +19,17 @@ function AddBoardModal() {
   const columns = ["To Do", "In Progress", "Completed"];
   const [selectedColumns, setSelectedColumns] = useState(["To Do"]);
 
+  const [editBoard, setEditBoard] = useState(boardTitle);
+  const [editIcon, setEditIcon] = useState(currentObj.icon);
+  const chosenColumns = currentObj?.columns?.map(
+    (column) => column.columnTitle
+  );
+  const [editColumn, setEditColumn] = useState(chosenColumns);
+
   const updateColumns = (column) => {
-    setColumnValid(true);
-    setSelectedColumns((prevColumns) => {
+    const setter = host === "add" ? setSelectedColumns : setEditColumn;
+
+    setter((prevColumns) => {
       const isSelected = prevColumns.includes(column);
       if (isSelected) {
         return prevColumns.filter((item) => item !== column);
@@ -26,19 +37,30 @@ function AddBoardModal() {
         return [...prevColumns, column];
       }
     });
+    setColumnValid(true);
+  };
+
+  const validate = (boardName, logo, columns) => {
+    let isValid = true;
+    if (!boardName.trim() || boardName.length < 3) {
+      setNameValid(false) ;
+      isValid = false;
+      return;
+    }
+    if (logo === null) {
+      setLogoValid(false) ;
+      isValid = false;
+      return;
+    }
+    if (columns?.length === 0) {
+      setColumnValid(false) ;
+      isValid = false;
+      return;
+    }
+    return isValid;
   };
   const handleCreate = () => {
-    if (
-      !boards?.userBoardName.trim() ||
-      boards?.userBoardName.length < 3 ||
-      iconIndex === null ||
-      selectedColumns?.length === 0
-    ) {
-      setNameValid(false);
-      setLogoValid(false);
-      setColumnValid(false);
-      return;
-    } else {
+    if (validate(boards?.userBoardName, iconIndex, selectedColumns)) {
       dispatchBoards({
         type: "ADD_NEW_BOARD",
         payload: {
@@ -54,16 +76,46 @@ function AddBoardModal() {
       });
     }
   };
+
+  const handleEdit = () => {
+    if (validate(editBoard, editIcon, editColumn)) {
+      dispatchBoards({
+        type: "EDIT_BOARD",
+        payload: {
+          id: currentObj.id,
+          title: editBoard,
+          icon: editIcon,
+          columns: editColumn.map((columnTitle) => {
+            const existingColumn = currentObj.columns.find(
+              (col) => col.columnTitle === columnTitle
+            );
+            return (
+              existingColumn || {
+                columnId: uuid(),
+                columnTitle,
+                tasks: [], 
+              }
+            );
+          }),
+        },
+      });
+    }
+  };
   return (
     <div className="modal-wrapper">
       <article className="modal-container">
         <header className="modal-header">
-          <h2 className="text-2xl title">New Board</h2>
+          <h2 className="text-2xl title">
+            {host === "add" ? "New Board" : "Edit Board"}
+          </h2>
           <button
             type="button"
             className="close-modal-btn"
             onClick={() =>
-              dispatchBoards({ type: "CLOSE_MODAL", key: "boardModal" })
+              dispatchBoards({
+                type: "CLOSE_MODAL",
+                key: host === "add" ? "boardModal" : "editBoardModal",
+              })
             }
           >
             <Close className="text-2xl" />
@@ -83,13 +135,15 @@ function AddBoardModal() {
         <input
           type="text"
           id="boardName"
-          value={boards?.userBoardName}
+          value={host === "add" ? boards?.userBoardName : editBoard}
           className={`board-input ${!isNameValid && "border-error"}`}
           onChange={(e) => {
-            dispatchBoards({
-              type: "UPDATE_BOARD_INPUT",
-              value: e.target.value,
-            });
+            host === "add"
+              ? dispatchBoards({
+                  type: "UPDATE_BOARD_INPUT",
+                  value: e.target.value,
+                })
+              : setEditBoard(e.target.value);
             setNameValid(true);
           }}
           placeholder="eg Default Board."
@@ -108,7 +162,7 @@ function AddBoardModal() {
          */}
         <ul className="logos-wrapper">
           <li className="logo-header">
-            Choose Logo
+            {host === "add" ? "Choose Logo" : "Edit Logo"}
             {!isLogoValid && (
               <span className="text-xs text-crimson">
                 Select at least one logo!
@@ -116,22 +170,20 @@ function AddBoardModal() {
             )}
           </li>
           {logoData.map((logo, i) => {
-            const isSelected = iconIndex === i;
+            const isSelected =
+              host === "add" ? iconIndex === i : editIcon === logo;
             return (
               <li key={i} className="logo-item">
                 <button
                   type="button"
                   className={`icon-btn ${isSelected && "selected"}`}
                   onClick={() => {
-                    setIconIndex(i);
+                    host === "add" ? setIconIndex(i) : setEditIcon(logo);
+
                     setLogoValid(true);
                   }}
                 >
-                  <img
-                    src={logo}
-                    alt=""
-                    className={`logo-icon `}
-                  />
+                  <img src={logo} alt="" className={`logo-icon `} />
                 </button>
               </li>
             );
@@ -153,8 +205,11 @@ function AddBoardModal() {
               </span>
             )}
           </li>
-          {columns.map((column, i) => {
-            const isSelected = selectedColumns.includes(column);
+          {columns?.map((column, i) => {
+            const isSelected =
+              host === "add"
+                ? selectedColumns.includes(column)
+                : editColumn.includes(column);
             return (
               <li key={i} className="column-item">
                 <button
@@ -169,14 +224,21 @@ function AddBoardModal() {
           })}
         </ul>
         <div className="actions-wrapper">
-          <button type="button" className="btn create" onClick={handleCreate}>
-            Create board <Check />
+          <button
+            type="button"
+            className="btn create"
+            onClick={host === "add" ? handleCreate : handleEdit}
+          >
+            {host === "add" ? `Create board` : "Save changes"} <Check />
           </button>
           <button
             type="button"
             className="btn cancel"
             onClick={() =>
-              dispatchBoards({ type: "CLOSE_MODAL", key: "boardModal" })
+              dispatchBoards({
+                type: "CLOSE_MODAL",
+                key: host === "add" ? "boardModal" : "editBoardModal",
+              })
             }
           >
             Cancel

@@ -27,7 +27,7 @@ color: var(--crimson);
     border-radius: .5rem;
     padding-left: 1rem;
 }
-.board-input:focus,.board-input:hover{
+.board-input:not(.border-error):focus,.board-input:not(.border-error):hover{
     outline: none;
     border-color: var(--azure);
 }
