@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { DataContext } from "../../App";
+import { AppThemeContext, DataContext } from "../../App";
 import { ArrowDropDown, ArrowDropUp, Check, Close } from "@mui/icons-material";
 import "./addTask.css";
 import uuid from "react-uuid";
@@ -12,6 +12,7 @@ function AddTaskModal({
   columnId,
 }) {
   const { boards, dispatchBoards } = useContext(DataContext);
+  const { isDark} = useContext(AppThemeContext);
   const [editing, setEditing] = useState({
     userTaskTitle: taskName,
     userTaskDescription: taskDescription,
@@ -147,7 +148,7 @@ const updatedBoardObj = {
   };
   return (
     <div className="modal-wrapper">
-      <article className="modal-container">
+      <article className={`modal-container ${!isDark && "light-modal"}`}>
         <header className="modal-header">
           <h2 className="text-2xl title">
             {host === "add" ? "New Task" : "Edit Task"}

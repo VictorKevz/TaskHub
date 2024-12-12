@@ -234,7 +234,7 @@ function App() {
       <DataContext.Provider
         value={{ boards, dispatchBoards, currentBoard, setCurrentBoard }}
       >
-        <main className="bg-charcoal w-full min-h-screen flex items-start justify-start">
+        <main className=" w-full min-h-screen flex items-start justify-start">
           <AsideBar />
           <MainBoard />
         </main>

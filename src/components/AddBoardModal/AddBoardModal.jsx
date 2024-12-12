@@ -149,7 +149,7 @@ function AddBoardModal({ host, boardTitle }) {
           placeholder="eg Default Board."
         />
         {!isNameValid && (
-          <span className="text-xs text-crimson">
+          <span className="text-xs text-crimson font-bold">
             Can't be empty nor too short!
           </span>
         )}
@@ -164,7 +164,7 @@ function AddBoardModal({ host, boardTitle }) {
           <li className="logo-header">
             {host === "add" ? "Choose Logo" : "Edit Logo"}
             {!isLogoValid && (
-              <span className="text-xs text-crimson">
+              <span className="text-xs text-crimson font-bold">
                 Select at least one logo!
               </span>
             )}

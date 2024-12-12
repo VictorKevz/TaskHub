@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import "./mainBoard.css";
-import { DataContext } from "../../App";
+import { AppThemeContext, DataContext } from "../../App";
 import { AddCircle, Tune } from "@mui/icons-material";
 import AddTaskModal from "../AddTaskModal/AddTaskModal";
 import { coverImages } from "./coverImages";
@@ -9,13 +9,14 @@ import WarningModal from "../WarningModal/WarningModal";
 
 function MainBoard() {
   const { boards, dispatchBoards } = useContext(DataContext);
+  const{isDark} = useContext(AppThemeContext)
   const [optionsOpen, setOptions] = useState(false);
   const currentObj = boards?.boardsList.find(
     (obj) => obj.id === boards?.selectedBoard
   );
 
   return (
-    <section className="board-wrapper">
+    <section className={`board-wrapper ${!isDark && "light-board-wrapper"}`}>
       {/*
        *
        *
@@ -23,7 +24,7 @@ function MainBoard() {
        *
        *
        */}
-      <header className="board-header">
+      <header className={`board-header ${!isDark && "light-header"}`}>
         <h2 className="board-name">{currentObj?.title}</h2>
         <div className="options-wrapper">
           <button
@@ -95,7 +96,7 @@ function MainBoard() {
        *
        *
        */}
-      <div className="board-container">
+      <div className={`board-container ${!isDark && "light-text"}`}>
         {currentObj?.columns?.map((item, i) => (
           <section key={item?.columnId} className="col-wrapper">
             <header className="col-header">

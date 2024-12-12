@@ -1,12 +1,13 @@
 import { Warning } from "@mui/icons-material";
 import React, { useContext } from "react";
 import "./warningModal.css";
-import { DataContext } from "../../App";
+import { AppThemeContext, DataContext } from "../../App";
 function WarningModal({ title, message, id, host,columnId }) {
   const { dispatchBoards, boards } = useContext(DataContext);
+  const{isDark} = useContext(AppThemeContext)
   return (
     <div className="modal-wrapper">
-      <div className="modal-container warning">
+      <div className={`modal-container warning ${!isDark && "light-modal"}`}>
         <span className="warning-icon">
           <Warning className="amber-icon" />
         </span>

@@ -5,6 +5,7 @@
   align-items: flex-start;
   gap: 1.2rem;
   margin-top: 2.5rem;
+  padding-bottom: 1rem;
 }
 .task-card {
   width: 350px;

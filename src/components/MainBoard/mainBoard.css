@@ -43,6 +43,8 @@
     background-color: var(--azure);
     border-radius: 2rem;
     gap: .3rem;
+    color: #fff!important;
+
 }
 /* .options-board-btn{
   border: 1px solid var(--slate);
